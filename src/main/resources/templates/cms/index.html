@@ -1,10 +1,38 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="ISO-8859-1" />
-<title>Insert title here</title>
-</head>
-<body>
-	Hello World!
-</body>
+	<head>
+		<meta charset="ISO-8859-1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<!-- Bootstrap Core CSS -->
+		<link rel="stylesheet" type="text/css" href="../../static/cms/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
+
+		<!-- Custom CSS -->
+		<link rel="stylesheet" type="text/css" href="../../static/cms/css/sb-admin.css" th:href="@{css/sb-admin.css}" />
+		
+		<!-- Custom Fonts -->
+		<link rel="stylesheet" type="text/css" href="../../static/cms/font-awesome/css/font-awesome.min.css" />
+		
+		<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
+		
+		<title>Fondou CMS</title>
+	</head>
+	<body>
+		<nav th:replace="cms/cms-base :: navigation">
+		</nav>
+		<div id="wrapper">	
+	        <div id="page-wrapper">	
+	            <div class="container-fluid">	
+	                <div class="row">
+	                    <div class="col-lg-12">
+	                        <h1 class="page-header">
+	                            Fondou Cafe - Content Management System
+	                        </h1>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>	
+	    </div>	
+		<script type="text/javascript" src="../../static/cms/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}"></script>
+	</body>
 </html>
