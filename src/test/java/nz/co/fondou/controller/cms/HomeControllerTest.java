@@ -23,6 +23,7 @@ public class HomeControllerTest {
 	
 	@Test
 	public void basicTest() throws Exception{
+		mockMvc.perform(get("/cms")).andExpect(status().isOk()).andExpect(view().name("cms/index"));
 		mockMvc.perform(get("/cms/")).andExpect(status().isOk()).andExpect(view().name("cms/index"));
 	}
 	
