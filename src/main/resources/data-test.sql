@@ -1,0 +1,1 @@
+INSERT INTO branch(name) VALUES('sample')
