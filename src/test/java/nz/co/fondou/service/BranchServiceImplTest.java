@@ -36,23 +36,22 @@ public class BranchServiceImplTest {
 	}
 
 	@Test
-	public void testGetMainBranchWithReturnFromRepository() {
+	public void testGetBranchByNameWithReturnFromRepository() {
 		Branch testBranch = new Branch(testBranchId, testBranchName);
 
-		when(fondouConfiguration.getMainBranchName()).thenReturn(testBranchName);
 		when(branchRepository.findBranchByName(anyString())).thenReturn(testBranch);
 
-		Branch branch = this.branchService.getMainBranch();
+		Branch branch = this.branchService.getBranchByName(testBranchName);
 
 		assertEquals(testBranch, branch);
 		verify(branchRepository, times(1)).findBranchByName(eq(testBranchName));
 	}
 
 	@Test(expected=DataRetrievalFailureException.class)
-	public void testGetMainBranchWithoutReturnFromRepository() {
+	public void testGetBranchByNameWithoutReturnFromRepository() {
 		when(branchRepository.findBranchByName(anyString())).thenReturn(null);
 		
-		this.branchService.getMainBranch();
+		this.branchService.getBranchByName(testBranchName);
 	}
 
 }

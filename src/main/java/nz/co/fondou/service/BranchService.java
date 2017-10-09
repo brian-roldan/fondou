@@ -6,4 +6,6 @@ public interface BranchService {
 
 	public Branch getMainBranch();
 	
+	public Branch getBranchByName(String name);
+	
 }

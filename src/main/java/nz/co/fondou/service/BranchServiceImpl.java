@@ -26,11 +26,17 @@ public class BranchServiceImpl implements BranchService {
 
 	@Override
 	public Branch getMainBranch() {
-		Branch branch = branchRepository.findBranchByName(fondouConfiguration.getMainBranchName());
+		return getBranchByName(fondouConfiguration.getMainBranchName());
+	}
+
+
+	@Override
+	public Branch getBranchByName(String branchName) {
+		Branch branch = branchRepository.findBranchByName(branchName);
 		if(nonNull(branch)) {
 			return branch;
 		} else {
-			throw new DataRetrievalFailureException(format("Unable to find main branch with name %s", fondouConfiguration.getMainBranchName()));
+			throw new DataRetrievalFailureException(format("Unable to find main branch with name %s", branchName));
 		}
 	}
 
