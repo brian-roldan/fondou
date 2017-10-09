@@ -1,7 +1,7 @@
 package nz.co.fondou.controller.cms;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.ui.Model;
 
+import nz.co.fondou.configuration.ModelAttributeConfiguration;
 import nz.co.fondou.domain.Branch;
 import nz.co.fondou.service.BranchService;
 
@@ -30,28 +31,30 @@ public class HomeControllerTest {
 	
 	MockMvc mockMvc;
 	
+	ModelAttributeConfiguration modelAttributeConfiguration;
 	String homeUrl = "cms/index";
 	
 	@Before
-	public void setUp(){
+	public void setUp() {
 		initMocks(this);
-		homeController = new HomeController(branchService);
+		modelAttributeConfiguration = ModelAttributeConfiguration.builder().branchKey("branch").build();
+		homeController = new HomeController(branchService, modelAttributeConfiguration);
 		mockMvc = standaloneSetup(homeController).build();
 	}
 	
 	@Test
-	public void homePositiveTest(){
+	public void homePositiveTest() {
 		when(branchService.getMainBranch()).thenReturn(new Branch());
 		
 		String returnedHomeUrl = homeController.home(model);
 		
 		assertEquals(homeUrl, returnedHomeUrl);
 		verify(branchService, times(1)).getMainBranch();
-		verify(model, times(1)).addAttribute(eq("branch"), anyString());
+		verify(model, times(1)).addAttribute(eq(modelAttributeConfiguration.getBranchKey()), any(Branch.class));
 	}
 	
 	@Test
-	public void basicMvcTest() throws Exception{
+	public void basicMvcTest() throws Exception {
 		when(branchService.getMainBranch()).thenReturn(new Branch());
 		
 		mockMvc.perform(get("/cms")).andExpect(status().isOk()).andExpect(view().name(homeUrl));
@@ -59,7 +62,7 @@ public class HomeControllerTest {
 	}
 	
 	@Test
-	public void basicMvcWithIndexTest() throws Exception{
+	public void basicMvcWithIndexTest() throws Exception {
 		when(branchService.getMainBranch()).thenReturn(new Branch());
 		
 		mockMvc.perform(get("/cms/index/")).andExpect(status().isOk()).andExpect(view().name(homeUrl));

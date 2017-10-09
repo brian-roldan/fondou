@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import nz.co.fondou.configuration.ModelAttributeConfiguration;
 import nz.co.fondou.domain.Branch;
 import nz.co.fondou.service.BranchService;
 
@@ -11,11 +12,11 @@ import nz.co.fondou.service.BranchService;
 public class HomeController {
 	
 	private final BranchService branchService;
-	private final String branchAttributeKey;
+	private final ModelAttributeConfiguration modelAttributeConfiguration;
 	
-	public HomeController(BranchService branchService) {
+	public HomeController(BranchService branchService, ModelAttributeConfiguration modelAttributeConfiguration) {
 		this.branchService = branchService;
-		branchAttributeKey = "branch";
+		this.modelAttributeConfiguration = modelAttributeConfiguration;
 	}
 
 	@GetMapping(value={"/cms", "/cms/index"})
