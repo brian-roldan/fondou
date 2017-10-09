@@ -16,5 +16,10 @@ public class ApplicationConfiguration {
 		}
 		return new FondouConfiguration(mainBranchName);
 	}
+	
+	@Bean
+	public ModelAttributeConfiguration modelAttributeConfiguration(){
+		return ModelAttributeConfiguration.builder().branchKey("branch").build();
+	}
 
 }
