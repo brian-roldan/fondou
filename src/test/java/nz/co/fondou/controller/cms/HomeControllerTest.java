@@ -1,10 +1,11 @@
 package nz.co.fondou.controller.cms;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,21 +41,27 @@ public class HomeControllerTest {
 	
 	@Test
 	public void homePositiveTest(){
+		when(branchService.getMainBranch()).thenReturn(new Branch());
+		
 		String returnedHomeUrl = homeController.home(model);
 		
 		assertEquals(homeUrl, returnedHomeUrl);
 		verify(branchService, times(1)).getMainBranch();
-		verify(model, times(1)).addAttribute(eq("branch"), any(Branch.class));
+		verify(model, times(1)).addAttribute(eq("branch"), anyString());
 	}
 	
 	@Test
 	public void basicMvcTest() throws Exception{
+		when(branchService.getMainBranch()).thenReturn(new Branch());
+		
 		mockMvc.perform(get("/cms")).andExpect(status().isOk()).andExpect(view().name(homeUrl));
 		mockMvc.perform(get("/cms/")).andExpect(status().isOk()).andExpect(view().name(homeUrl));
 	}
 	
 	@Test
 	public void basicMvcWithIndexTest() throws Exception{
+		when(branchService.getMainBranch()).thenReturn(new Branch());
+		
 		mockMvc.perform(get("/cms/index/")).andExpect(status().isOk()).andExpect(view().name(homeUrl));
 	}
 	
