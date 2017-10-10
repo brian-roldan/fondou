@@ -24,4 +24,10 @@ public class Branch {
 	@Column(unique=true, nullable=false)
 	private String name;
 	
+	@Column(length=100, nullable=false)
+	private String address;
+	
+	@Column(length=200, nullable=false)
+	private String mapLink; 
+	
 }

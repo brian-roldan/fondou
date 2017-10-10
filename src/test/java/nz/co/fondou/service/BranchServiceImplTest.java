@@ -28,6 +28,8 @@ public class BranchServiceImplTest {
 
 	final Long testBranchId = 1L;
 	final String testBranchName = "Sample Name";
+	final String testAddress = "address";
+	final String testMapLink = "address.lnk";
 
 	@Before
 	public void setup() {
@@ -37,7 +39,7 @@ public class BranchServiceImplTest {
 
 	@Test
 	public void testGetBranchByNameWithReturnFromRepository() {
-		Branch testBranch = new Branch(testBranchId, testBranchName);
+		Branch testBranch = new Branch(testBranchId, testBranchName, testAddress, testMapLink);
 
 		when(branchRepository.findBranchByName(anyString())).thenReturn(testBranch);
 
