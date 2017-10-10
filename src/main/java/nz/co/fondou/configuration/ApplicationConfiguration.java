@@ -19,7 +19,10 @@ public class ApplicationConfiguration {
 	
 	@Bean
 	public ModelAttributeConfiguration modelAttributeConfiguration(){
-		return ModelAttributeConfiguration.builder().branchKey("branch").build();
+		return ModelAttributeConfiguration.builder()
+				.branchKey("branch")
+				.commandKey("command")
+				.build();
 	}
 
 }
