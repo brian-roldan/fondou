@@ -2,14 +2,14 @@ package nz.co.fondou.domain;
 
 import static javax.persistence.GenerationType.AUTO;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
+
+import org.joda.time.LocalTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,27 +18,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
-public class Branch {
+public class TradingPeriod {
 
 	@Id
 	@GeneratedValue(strategy=AUTO)
 	private Long id;
-	
-	@Column(unique=true, nullable=false)
-	private String name;
-	
-	@Column(length=100, nullable=false)
-	private String address;
-	
-	@Column(length=200, nullable=false)
-	private String mapLink; 
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<TradingPeriod> tradingPeriods;
+	@Column(nullable = false)
+	@Enumerated
+	private DayOfWeek dayOfWeek;
+	private LocalTime openingTime;
+	private LocalTime closingTime;
+	@ManyToOne
+	private Branch branch;
 	
 }
