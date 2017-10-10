@@ -1,0 +1,1 @@
+INSERT INTO branch(name, address, map_link) VALUES('sample', '157 Hobson Street | G17, Auckland City Hotel, Auckland 1010, New Zealand', 'https://goo.gl/maps/gwKif1akFtp')

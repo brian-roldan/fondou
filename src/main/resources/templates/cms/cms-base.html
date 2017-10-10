@@ -30,7 +30,14 @@
 	    <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 	    <div class="collapse navbar-collapse navbar-ex1-collapse">
 	        <ul class="nav navbar-nav side-nav">
-	            <li><a href="/cms/general">General</a></li>			
+	        	<li>
+	        		<a href="#" data-toggle="collapse" data-target="#generalNavigation"> General <i class="fa fa-fw fa-caret-down"></i></a>
+	        		<ul id="generalNavigation" class="collapse">
+	        			<li><a href="#" th:href="${'/cms/' + branch.name + '/address'}">  Address </a></li>
+	        			<li><a href="#">  Trading Hours </a></li>
+	        			<li><a href="#">  Contact Details </a></li>  			
+	        		</ul>
+	        	</li>
 	        </ul>
 	    </div>
 	</nav>
