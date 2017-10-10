@@ -22,18 +22,19 @@ public class AddressController {
 		this.branchService = branchService;
 		this.modelAttributeConfiguration = modelAttributeConfiguration;
 	}
-
+	
 	@GetMapping("/cms/{branchName}/address")
 	public String viewAddress(Model model, @PathVariable String branchName) {
 		Branch branch = branchService.getBranchByName(branchName);
-		model.addAttribute(modelAttributeConfiguration.getBranchKey(), branch);
+		model.addAttribute(modelAttributeConfiguration.getBranchKey(), branchName);
+		model.addAttribute(modelAttributeConfiguration.getCommandKey(), branch);
 		return "cms/branch-info/address";
 	}
 
 	@PostMapping("/cms/{branchName}/address")
 	public String saveAddress(@PathVariable String branchName, Branch branch) {
 		branch.setName(branchName);
-		branchService.saveAddress(branch);
+		branchService.saveAddressByName(branch);
 		return format("redirect:/cms/%s/address", branchName);
 	}
 	

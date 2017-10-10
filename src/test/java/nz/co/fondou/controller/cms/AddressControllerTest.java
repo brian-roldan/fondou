@@ -4,6 +4,7 @@ import static java.lang.String.format;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -50,7 +51,7 @@ public class AddressControllerTest {
 	@Before
 	public void setUp() {
 		initMocks(this);
-		modelAttributeConfiguration = ModelAttributeConfiguration.builder().branchKey("branch").build();
+		modelAttributeConfiguration = ModelAttributeConfiguration.builder().branchKey("branch").commandKey("command").build();
 		addressController = new AddressController(branchService, modelAttributeConfiguration);
 		mockMvc = standaloneSetup(addressController).build();
 	}
@@ -61,23 +62,24 @@ public class AddressControllerTest {
 		
 		assertEquals(viewAddressView, urlReturn);
 		verify(branchService, times(1)).getBranchByName(eq(testBranchName));
-		verify(model, times(1)).addAttribute(eq(modelAttributeConfiguration.getBranchKey()), any(Branch.class));
+		verify(model, times(1)).addAttribute(eq(modelAttributeConfiguration.getBranchKey()), isA(String.class));
+		verify(model, times(1)).addAttribute(eq(modelAttributeConfiguration.getCommandKey()), any());
 	}
 	
 	@Test
 	public void setAddressTest() {
 		
-		Branch testBranch = new Branch(null, null, testAddress, testMapLink);
+		Branch testBranch = Branch.builder().address(testAddress).mapLink(testMapLink).build();
 		
 		addressController.saveAddress(testBranchName, testBranch);
 		
 		assertEquals(testBranchName, testBranch.getName());
-		verify(branchService, times(1)).saveAddress(eq(testBranch));
+		verify(branchService, times(1)).saveAddressByName(eq(testBranch));
 	}
 	
 	@Test
 	public void basicGetViewAddressMvcTest() throws Exception {
-		when(branchService.getMainBranch()).thenReturn(new Branch());
+		when(branchService.getBranchByName(testBranchName)).thenReturn(new Branch());
 		
 		mockMvc.perform(get(addressUrl)).andExpect(status().isOk()).andExpect(view().name(viewAddressView));
 	}
