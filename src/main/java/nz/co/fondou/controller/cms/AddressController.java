@@ -1,9 +1,12 @@
 package nz.co.fondou.controller.cms;
 
+import static java.lang.String.format;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import nz.co.fondou.configuration.ModelAttributeConfiguration;
 import nz.co.fondou.domain.Branch;
@@ -25,6 +28,13 @@ public class AddressController {
 		Branch branch = branchService.getBranchByName(branchName);
 		model.addAttribute(modelAttributeConfiguration.getBranchKey(), branch);
 		return "cms/branch-info/address";
+	}
+
+	@PostMapping("/cms/{branchName}/address")
+	public String saveAddress(@PathVariable String branchName, Branch branch) {
+		branch.setName(branchName);
+		branchService.saveAddress(branch);
+		return format("redirect:/cms/%s/address", branchName);
 	}
 	
 }
