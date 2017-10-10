@@ -41,7 +41,7 @@ public class BranchServiceImpl implements BranchService {
 	}
 
 	@Override
-	public void saveAddress(Branch branch) {
+	public void saveAddressByName(Branch branch) {
 		Branch branchFromRepository = branchRepository.findBranchByName(branch.getName());
 		
 		branchFromRepository.setAddress(branch.getAddress());
