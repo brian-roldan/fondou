@@ -5,7 +5,8 @@ import nz.co.fondou.domain.Branch;
 public interface BranchService {
 
 	public Branch getMainBranch();
+	public Branch getBranchByName(String branchName);
 	
-	public Branch getBranchByName(String name);
+	public void saveAddress(Branch branch);
 	
 }

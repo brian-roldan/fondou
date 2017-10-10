@@ -30,6 +30,8 @@ public class BranchServiceImplTest {
 	final String testBranchName = "Sample Name";
 	final String testAddress = "address";
 	final String testMapLink = "address.lnk";
+	final String testNewAddress = "NEW address";
+	final String testNewMapLink = "differentaddress.lnk";
 
 	@Before
 	public void setup() {
@@ -54,6 +56,21 @@ public class BranchServiceImplTest {
 		when(branchRepository.findBranchByName(anyString())).thenReturn(null);
 		
 		this.branchService.getBranchByName(testBranchName);
+	}
+	
+	@Test 
+	public void testSaveAddress() {
+		Branch savedBranch = new Branch(testBranchId, testBranchName, testAddress, testMapLink);
+		Branch newBranch = new Branch(null, testBranchName, testNewAddress, testNewMapLink);
+		
+		when(branchRepository.findBranchByName(newBranch.getName())).thenReturn(savedBranch);
+		
+		branchService.saveAddress(newBranch);
+		
+		assertEquals(testNewAddress, savedBranch.getAddress());
+		assertEquals(testNewMapLink, savedBranch.getMapLink());
+		verify(branchRepository, times(1)).save(eq(savedBranch));
+		
 	}
 
 }
