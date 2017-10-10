@@ -32,7 +32,7 @@ public class HomeControllerTest {
 	MockMvc mockMvc;
 	
 	ModelAttributeConfiguration modelAttributeConfiguration;
-	String homeUrl = "cms/index";
+	String homeView = "cms/index";
 	
 	@Before
 	public void setUp() {
@@ -48,7 +48,7 @@ public class HomeControllerTest {
 		
 		String returnedHomeUrl = homeController.home(model);
 		
-		assertEquals(homeUrl, returnedHomeUrl);
+		assertEquals(homeView, returnedHomeUrl);
 		verify(branchService, times(1)).getMainBranch();
 		verify(model, times(1)).addAttribute(eq(modelAttributeConfiguration.getBranchKey()), any(Branch.class));
 	}
@@ -57,15 +57,15 @@ public class HomeControllerTest {
 	public void basicMvcTest() throws Exception {
 		when(branchService.getMainBranch()).thenReturn(new Branch());
 		
-		mockMvc.perform(get("/cms")).andExpect(status().isOk()).andExpect(view().name(homeUrl));
-		mockMvc.perform(get("/cms/")).andExpect(status().isOk()).andExpect(view().name(homeUrl));
+		mockMvc.perform(get("/cms")).andExpect(status().isOk()).andExpect(view().name(homeView));
+		mockMvc.perform(get("/cms/")).andExpect(status().isOk()).andExpect(view().name(homeView));
 	}
 	
 	@Test
 	public void basicMvcWithIndexTest() throws Exception {
 		when(branchService.getMainBranch()).thenReturn(new Branch());
 		
-		mockMvc.perform(get("/cms/index/")).andExpect(status().isOk()).andExpect(view().name(homeUrl));
+		mockMvc.perform(get("/cms/index/")).andExpect(status().isOk()).andExpect(view().name(homeView));
 	}
 	
 }
