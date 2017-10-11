@@ -1,7 +1,5 @@
 package nz.co.fondou.command.converter;
 
-import static nz.co.fondou.domain.DayOfWeek.MONDAY;
-import static nz.co.fondou.domain.DayOfWeek.TUESDAY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -10,7 +8,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 
-import org.joda.time.LocalTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -28,8 +25,6 @@ public class BranchTradingPeriodCommandConverterTest {
 	@Mock TradingPeriodCommandConverter tradingPeriodCommandConverter;
 	
 	String testBranchName = "testBranchName";
-	LocalTime testOpeningTime = new LocalTime(9, 29);
-	LocalTime testClosingTime = new LocalTime(20, 29);
 	
 	@Before
 	public void setup() {
@@ -41,14 +36,8 @@ public class BranchTradingPeriodCommandConverterTest {
 	public void testToCommand() throws Exception {
 		Branch branch = Branch.builder().name(testBranchName).tradingPeriods(
 				Arrays.asList(
-						TradingPeriod.builder()
-						.dayOfWeek(MONDAY)
-						.openingTime(testOpeningTime)
-						.closingTime(testClosingTime).build(),
-						TradingPeriod.builder()
-						.dayOfWeek(TUESDAY)
-						.openingTime(testOpeningTime)
-						.closingTime(testClosingTime).build())).build();
+						new TradingPeriod(),
+						new TradingPeriod())).build();
 		when(tradingPeriodCommandConverter.toCommand(any(TradingPeriod.class))).thenReturn(new TradingPeriodCommand());
 		
 		BranchTradingPeriodCommand command = converter.toCommand(branch);
@@ -74,14 +63,8 @@ public class BranchTradingPeriodCommandConverterTest {
 	public void testToEntity() throws Exception {
 		BranchTradingPeriodCommand command = BranchTradingPeriodCommand.builder().branchName(testBranchName).tradingPeriods(
 				Arrays.asList(
-						TradingPeriodCommand.builder()
-						.dayOfWeek(MONDAY.ordinal())
-						.openingTime(testOpeningTime)
-						.closingTime(testClosingTime).build(),
-						TradingPeriodCommand.builder()
-						.dayOfWeek(TUESDAY.ordinal())
-						.openingTime(testOpeningTime)
-						.closingTime(testClosingTime).build())).build();
+						new TradingPeriodCommand(),
+						new TradingPeriodCommand())).build();
 		when(tradingPeriodCommandConverter.toEntity(any(TradingPeriodCommand.class))).thenReturn(new TradingPeriod());
 		
 		Branch branch = converter.toEntity(command);

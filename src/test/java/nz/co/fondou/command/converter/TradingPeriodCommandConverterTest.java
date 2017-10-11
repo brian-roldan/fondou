@@ -17,8 +17,10 @@ public class TradingPeriodCommandConverterTest {
 	TradingPeriodCommandConverter converter;
 
 	DayOfWeek testDayOfWeek = MONDAY;
-	LocalTime testOpeningTime = new LocalTime(9, 29);
-	LocalTime testClosingTime = new LocalTime(20, 29);
+	String testRawOpeningTime = "9:30";
+	String testRawClosingTime = "20:30";
+	LocalTime testOpeningTime = new LocalTime(9, 30);
+	LocalTime testClosingTime = new LocalTime(20, 30);
 	
 	@Before
 	public void setup() {
@@ -33,25 +35,25 @@ public class TradingPeriodCommandConverterTest {
 		
 		assertNotNull(command);
 		assertEquals(tradingPeriod.getDayOfWeek().ordinal(), command.getDayOfWeek());
-		assertEquals(tradingPeriod.getOpeningTime(), command.getOpeningTime());
-		assertEquals(tradingPeriod.getClosingTime(), command.getClosingTime());
+		assertEquals(testRawOpeningTime, command.getOpeningTime());
+		assertEquals(testRawClosingTime, command.getClosingTime());
 	}
 
 	@Test
 	public void testToEntity() throws Exception {
-		TradingPeriodCommand command = TradingPeriodCommand.builder().openingTime(testOpeningTime).closingTime(testClosingTime).dayOfWeek(testDayOfWeek.ordinal()).build();
+		TradingPeriodCommand command = TradingPeriodCommand.builder().openingTime(testRawOpeningTime).closingTime(testRawClosingTime).dayOfWeek(testDayOfWeek.ordinal()).build();
 		
 		TradingPeriod tradingPeriod = converter.toEntity(command);
 		
 		assertNotNull(tradingPeriod);
-		assertEquals(command.getOpeningTime(), tradingPeriod.getOpeningTime());
-		assertEquals(command.getClosingTime(), tradingPeriod.getClosingTime());
 		assertEquals(command.getDayOfWeek(), tradingPeriod.getDayOfWeek().ordinal());
+		assertEquals(testOpeningTime, tradingPeriod.getOpeningTime());
+		assertEquals(testClosingTime, tradingPeriod.getClosingTime());
 	}
 
 	@Test(expected=RuntimeException.class)
 	public void testToEntityInvalidDayOfWeek() throws Exception {
-		TradingPeriodCommand command = TradingPeriodCommand.builder().openingTime(testOpeningTime).closingTime(testClosingTime).dayOfWeek(-20).build();
+		TradingPeriodCommand command = TradingPeriodCommand.builder().openingTime(testRawOpeningTime).closingTime(testRawClosingTime).dayOfWeek(-20).build();
 		
 		converter.toEntity(command);
 	}
