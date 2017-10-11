@@ -42,13 +42,13 @@ public class TestBootstrap {
 			return;
 		}
 		Branch branch = branchRepository.findBranchByName(fondouConfiguration.getMainBranchName());
-		branch.getTradingPeriods().add(new TradingPeriod(null, MONDAY	, new LocalTime(9, 29), new LocalTime(20, 29), branch));
-		branch.getTradingPeriods().add(new TradingPeriod(null, TUESDAY	, new LocalTime(9, 29), new LocalTime(20, 29), branch));
-		branch.getTradingPeriods().add(new TradingPeriod(null, WEDNESDAY, new LocalTime(9, 29), new LocalTime(20, 29), branch));
-		branch.getTradingPeriods().add(new TradingPeriod(null, THURSDAY	, new LocalTime(9, 29), new LocalTime(20, 29), branch));
-		branch.getTradingPeriods().add(new TradingPeriod(null, FRIDAY	, new LocalTime(9, 29), new LocalTime(20, 29), branch));
-		branch.getTradingPeriods().add(new TradingPeriod(null, SATURDAY	, new LocalTime(9, 29), new LocalTime(20, 29), branch));
-		branch.getTradingPeriods().add(new TradingPeriod(null, SUNDAY	, new LocalTime(9, 29), new LocalTime(20, 29), branch));
+		branch.getTradingPeriods().add(new TradingPeriod(null, MONDAY	, new LocalTime(9, 30), new LocalTime(20, 30), branch));
+		branch.getTradingPeriods().add(new TradingPeriod(null, TUESDAY	, new LocalTime(10, 30), new LocalTime(20, 30), branch));
+		branch.getTradingPeriods().add(new TradingPeriod(null, WEDNESDAY, new LocalTime(11, 30), new LocalTime(20, 30), branch));
+		branch.getTradingPeriods().add(new TradingPeriod(null, THURSDAY	, new LocalTime(12, 30), new LocalTime(20, 30), branch));
+		branch.getTradingPeriods().add(new TradingPeriod(null, FRIDAY	, new LocalTime(13, 30), new LocalTime(20, 30), branch));
+		branch.getTradingPeriods().add(new TradingPeriod(null, SATURDAY	, new LocalTime(14, 30), new LocalTime(20, 30), branch));
+		branch.getTradingPeriods().add(new TradingPeriod(null, SUNDAY	, new LocalTime(15, 30), new LocalTime(20, 30), branch));
 		
 		branchRepository.save(branch);
 		
