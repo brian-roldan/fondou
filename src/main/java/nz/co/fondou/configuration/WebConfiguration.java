@@ -11,6 +11,7 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
+//@Configuration - //TODO understand why this does not work on spring boot 
 @EnableWebMvc
 @ComponentScan("nz.co.fondou.controller")
 public class WebConfiguration extends WebMvcConfigurerAdapter {
