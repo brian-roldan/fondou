@@ -12,7 +12,7 @@ import nz.co.fondou.command.TradingPeriodCommand;
 import nz.co.fondou.domain.DayOfWeek;
 import nz.co.fondou.domain.TradingPeriod;
 
-public class TradingPeriodCommandConverterTest {
+public class TradingPeriodCommandConverterImplTest {
 
 	TradingPeriodCommandConverter converter;
 
@@ -24,7 +24,7 @@ public class TradingPeriodCommandConverterTest {
 	
 	@Before
 	public void setup() {
-		converter = new TradingPeriodCommandConverter();
+		converter = new TradingPeriodCommandConverterImpl();
 	}
 	
 	@Test

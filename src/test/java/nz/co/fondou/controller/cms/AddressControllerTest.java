@@ -71,7 +71,7 @@ public class AddressControllerTest {
 	public void testSaveAddress() {
 		AddressCommand testBranch = AddressCommand.builder().address(testAddress).mapLink(testMapLink).build();
 		
-		addressController.saveAddress(testBranchName, testBranch);
+		addressController.saveAddress(testBranchName, testBranch, null);
 		
 		assertEquals(testBranchName, testBranch.getBranchName());
 		verify(addressService, times(1)).saveAddress(eq(testBranch));

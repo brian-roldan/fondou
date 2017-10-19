@@ -18,7 +18,7 @@ import nz.co.fondou.command.TradingPeriodCommand;
 import nz.co.fondou.domain.Branch;
 import nz.co.fondou.domain.TradingPeriod;
 
-public class BranchTradingPeriodCommandConverterTest {
+public class BranchTradingPeriodCommandConverterImplTest {
 
 	BranchTradingPeriodCommandConverter converter;
 	
@@ -29,7 +29,7 @@ public class BranchTradingPeriodCommandConverterTest {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		converter = new BranchTradingPeriodCommandConverter(tradingPeriodCommandConverter);
+		converter = new BranchTradingPeriodCommandConverterImpl(tradingPeriodCommandConverter);
 	}
 	
 	@Test
