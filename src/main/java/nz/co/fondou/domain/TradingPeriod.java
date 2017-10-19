@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.joda.time.LocalTime;
@@ -33,7 +34,9 @@ public class TradingPeriod {
 	private DayOfWeek dayOfWeek;
 	private LocalTime openingTime;
 	private LocalTime closingTime;
-	@ManyToOne
+	
+	@ManyToOne(optional=false)
+	@JoinColumn(name="branch_id")
 	private Branch branch;
 	
 }

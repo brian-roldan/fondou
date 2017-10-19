@@ -13,6 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TradingPeriodCommand {
 
+	private String dayTitle;
 	private int dayOfWeek;
 	private String openingTime;
 	private String closingTime;

@@ -34,7 +34,8 @@ public class TradingPeriodController {
 
 	@PostMapping("/cms/{branchName}/tradingPeriods")
 	private String showTradingHours(@PathVariable String branchName, BranchTradingPeriodCommand command) {
-
+		command.setBranchName(branchName);
+		tradingPeriodService.updateTradingHours(command);
 		return format("redirect:/cms/%s/tradingPeriods", branchName);
 	}
 	
