@@ -2,7 +2,6 @@ package nz.co.fondou.controller.cms;
 
 import static java.lang.String.format;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.times;
@@ -24,8 +23,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.ui.Model;
 
 import nz.co.fondou.configuration.ModelAttributeConfiguration;
-import nz.co.fondou.domain.Branch;
-import nz.co.fondou.service.BranchService;
+import nz.co.fondou.service.AddressCommand;
+import nz.co.fondou.service.AddressService;
 
 public class AddressControllerTest {
 
@@ -33,79 +32,74 @@ public class AddressControllerTest {
 	
 	ModelAttributeConfiguration modelAttributeConfiguration;
 	@Mock
-	BranchService branchService;
+	AddressService addressService;
 	@Mock
 	Model model;
 	
 	MockMvc mockMvc;
 	
-	private String testBranchName = "sample";
-	private String testAddress = "320 Queen Street";
-	private String testMapLink = "samplemap.lnk";
+	final String testBranchName = "sample";
+	final String testAddress = "320 Queen Street";
+	final String testMapLink = "samplemap.lnk";
 	
-	String viewAddressView = "cms/branch-info/address";
+	final String viewAddressView = "cms/branch-info/address";
 	
-	String addressUrl = format("/cms/%s/address", testBranchName);
-	String saveAddressRedirectUrl = format("redirect:/cms/%s/address", testBranchName);
+	final String addressUrl = format("/cms/%s/address", testBranchName);
+	final String saveAddressRedirectUrl = format("redirect:/cms/%s/address", testBranchName);
 	
 	@Before
-	public void setUp() {
+	public void setup() {
 		initMocks(this);
 		modelAttributeConfiguration = ModelAttributeConfiguration.builder().branchKey("branch").commandKey("command").build();
-		addressController = new AddressController(branchService, modelAttributeConfiguration);
+		addressController = new AddressController(addressService, modelAttributeConfiguration);
 		mockMvc = standaloneSetup(addressController).build();
 	}
-	
+
 	@Test
-	public void viewAddressTest() {
+	public void testViewAddress() {
+		when(addressService.getAddressByBranchName(testBranchName)).thenReturn(new AddressCommand());
+		
 		String urlReturn = addressController.viewAddress(model, testBranchName);
 		
 		assertEquals(viewAddressView, urlReturn);
-		verify(branchService, times(1)).getBranchByName(eq(testBranchName));
+		verify(addressService, times(1)).getAddressByBranchName(eq(testBranchName));
 		verify(model, times(1)).addAttribute(eq(modelAttributeConfiguration.getBranchKey()), isA(String.class));
-		verify(model, times(1)).addAttribute(eq(modelAttributeConfiguration.getCommandKey()), any());
+		verify(model, times(1)).addAttribute(eq(modelAttributeConfiguration.getCommandKey()), isA(AddressCommand.class));
 	}
-	
+
 	@Test
-	public void setAddressTest() {
-		
-		Branch testBranch = Branch.builder().address(testAddress).mapLink(testMapLink).build();
+	public void testSaveAddress() {
+		AddressCommand testBranch = AddressCommand.builder().address(testAddress).mapLink(testMapLink).build();
 		
 		addressController.saveAddress(testBranchName, testBranch);
 		
-		assertEquals(testBranchName, testBranch.getName());
-		verify(branchService, times(1)).saveAddressByName(eq(testBranch));
+		assertEquals(testBranchName, testBranch.getBranchName());
+		verify(addressService, times(1)).saveAddress(eq(testBranch));
 	}
 	
 	@Test
-	public void basicGetViewAddressMvcTest() throws Exception {
-		when(branchService.getBranchByName(testBranchName)).thenReturn(new Branch());
+	public void testBasicGetViewAddressMvc() throws Exception {
+		when(addressService.getAddressByBranchName(testBranchName)).thenReturn(new AddressCommand());
 		
 		mockMvc.perform(get(addressUrl)).andExpect(status().isOk()).andExpect(view().name(viewAddressView));
 	}
 	
 	@Test
-	public void blankBranchNameViewAddressMvcTest() throws Exception {
-		when(branchService.getMainBranch()).thenReturn(new Branch());
-		
+	public void testBlankBranchNameViewAddressMvc() throws Exception {
 		mockMvc.perform(get("/cms//address")).andExpect(status().isNotFound());
 	}
 	
 	@Test
-	public void basicPostViewAddressMvcTest() throws Exception {
-		when(branchService.getMainBranch()).thenReturn(new Branch());
-		
+	public void testBasicPostViewAddressMvc() throws Exception {
 		mockMvc.perform(post(addressUrl)
                 .contentType(APPLICATION_FORM_URLENCODED)
                 .param("address", testAddress)
                 .param("mapLink", testMapLink)).andExpect(status().is3xxRedirection()).andExpect(view().name(saveAddressRedirectUrl));
 	}
 	
-	@Ignore
+	@Ignore //TODO - update when validation is available
 	@Test
-	public void missingPostParameterViewAddressMvcTest() throws Exception {
-		when(branchService.getMainBranch()).thenReturn(new Branch());
-		
+	public void testMissingPostParameterViewAddressMvc() throws Exception {
 		mockMvc.perform(post(addressUrl)
                 .contentType(APPLICATION_FORM_URLENCODED)
                 .param("mapLink", testMapLink)).andExpect(status().is4xxClientError());

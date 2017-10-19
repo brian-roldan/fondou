@@ -8,33 +8,30 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import lombok.AllArgsConstructor;
 import nz.co.fondou.configuration.ModelAttributeConfiguration;
-import nz.co.fondou.domain.Branch;
-import nz.co.fondou.service.BranchService;
+import nz.co.fondou.service.AddressCommand;
+import nz.co.fondou.service.AddressService;
 
 @Controller
+@AllArgsConstructor
 public class AddressController {
 
-	private final BranchService branchService;
+	private final AddressService addressService;
 	private final ModelAttributeConfiguration modelAttributeConfiguration;
-	
-	public AddressController(BranchService branchService, ModelAttributeConfiguration modelAttributeConfiguration) {
-		this.branchService = branchService;
-		this.modelAttributeConfiguration = modelAttributeConfiguration;
-	}
 	
 	@GetMapping("/cms/{branchName}/address")
 	public String viewAddress(Model model, @PathVariable String branchName) {
-		Branch branch = branchService.getBranchByName(branchName);
+		AddressCommand addressCommand = addressService.getAddressByBranchName(branchName);
 		model.addAttribute(modelAttributeConfiguration.getBranchKey(), branchName);
-		model.addAttribute(modelAttributeConfiguration.getCommandKey(), branch);
+		model.addAttribute(modelAttributeConfiguration.getCommandKey(), addressCommand);
 		return "cms/branch-info/address";
 	}
 
 	@PostMapping("/cms/{branchName}/address")
-	public String saveAddress(@PathVariable String branchName, Branch branch) {
-		branch.setName(branchName);
-		branchService.saveAddressByName(branch);
+	public String saveAddress(@PathVariable String branchName, AddressCommand addressCommand) {
+		addressCommand.setBranchName(branchName);
+		addressService.saveAddress(addressCommand);
 		return format("redirect:/cms/%s/address", branchName);
 	}
 	
