@@ -20,15 +20,19 @@
 		
 		<script type="text/javascript">
 		
-			function init() {
+			$(document).ready(function() {
+				timePickerInit();
+			});
+			
+			function timePickerInit() {
 				$('.timepicker').timepicker({ 'timeFormat': 'H:i' });
 			}
 		
 		</script>
 		
-		<title>Fondou CMS - Address</title>
+		<title>Fondou CMS - Trading Periods</title>
 	</head>
-	<body onload="init()">
+	<body>
 		<nav th:replace="cms/cms-base :: navigation">
 		</nav>
 		<div id="wrapper">	
@@ -40,20 +44,31 @@
 	                            Trading Periods
 	                        </h1>
 	                        <div class="row">
-	                        	<div class="col-lg-6">
-	                        		<form th:object="${command}" method="post" th:action="@{/cms/{branch}/tradingPeriods(branch=${branch})}">
+	                        	<div class="col-lg-3">
+	                        		<form id="tradingHoursForm" th:object="${command}" method="post" th:action="@{/cms/{branch}/tradingPeriods(branch=${branch})}">
 	                        			<div class="form-group" th:each="tradingPeriod, stat : *{tradingPeriods}">	
-											<label th:text="*{#strings.capitalize(#strings.toLowerCase(tradingPeriods[__${stat.index}__].dayTitle))}">Monday</label>
+											<label class="control-label" th:text="*{#strings.capitalize(#strings.toLowerCase(tradingPeriods[__${stat.index}__].dayTitle))}">Monday</label>
+											<input type="hidden" th:field="*{tradingPeriods[__${stat.index}__].dayTitle}" />
 											<input type="hidden" th:field="*{tradingPeriods[__${stat.index}__].dayOfWeek}" />
-												<div class="form-inline">
-												<div class="col-3">
+											<small class="text-danger text-nowrap" th:if="${#fields.hasErrors('tradingPeriods[__${stat.index}__]')}" th:inline="text"> - [[${#fields.errors('tradingPeriods[__${stat.index}__]')[0]}]]</small>
+											<div class="row">
+												<div class="col-xs-4" th:classappend="${#fields.hasErrors('tradingPeriods[__${stat.index}__].openingTime') || #fields.hasErrors('tradingPeriods[__${stat.index}__]')}?has-error">
 													<input class="form-control timepicker" th:field="*{tradingPeriods[__${stat.index}__].openingTime}" />
-													<label>To</label>
-													<input class="form-control timepicker" th:field="*{tradingPeriods[__${stat.index}__].closingTime}" />
+													<small class="text-danger text-nowrap" th:if="${#fields.hasErrors('tradingPeriods[__${stat.index}__].openingTime')}" th:text="${#fields.errors('tradingPeriods[__${stat.index}__].openingTime')[0]}">Invalid Format</small>
 												</div>
-											</div>											
+												<div class="pull-left">
+													<label class="control-label">To</label>
+												</div>
+												<div class="col-xs-4" th:classappend="${#fields.hasErrors('tradingPeriods[__${stat.index}__].closingTime') || #fields.hasErrors('tradingPeriods[__${stat.index}__]')}?has-error">
+													<input class="form-control timepicker" th:field="*{tradingPeriods[__${stat.index}__].closingTime}" />
+													<small class="text-danger text-nowrap" th:if="${#fields.hasErrors('tradingPeriods[__${stat.index}__].closingTime')}" th:text="${#fields.errors('tradingPeriods[__${stat.index}__].closingTime')[0]}">Invalid Format</small>
+												</div>
+											</div>
 										</div>
-										<input type="submit" class="btn btn-primary" value="Save"/>
+										<p class="pull-right">
+											<button onclick="document.getElementById('tradingHoursForm').reset()" type="submit" class="btn btn-warning">Reset</button>
+											<input type="submit" class="btn btn-success" value="Save"/>
+										</p>
 	                        		</form>
 	                        	</div>
 	                        </div>
