@@ -1,12 +1,8 @@
 package nz.co.fondou.configuration;
 
-import static nz.co.fondou.domain.DayOfWeek.FRIDAY;
-import static nz.co.fondou.domain.DayOfWeek.MONDAY;
-import static nz.co.fondou.domain.DayOfWeek.SATURDAY;
-import static nz.co.fondou.domain.DayOfWeek.SUNDAY;
-import static nz.co.fondou.domain.DayOfWeek.THURSDAY;
-import static nz.co.fondou.domain.DayOfWeek.TUESDAY;
-import static nz.co.fondou.domain.DayOfWeek.WEDNESDAY;
+import static nz.co.fondou.domain.DayOfWeek.*;
+
+import java.util.List;
 
 import org.joda.time.LocalTime;
 import org.springframework.context.annotation.Profile;
@@ -41,14 +37,17 @@ public class TestBootstrap {
 		if(completed) {
 			return;
 		}
+		
 		Branch branch = branchRepository.findBranchByName(fondouConfiguration.getMainBranchName());
-		branch.getTradingPeriods().add(new TradingPeriod(null, MONDAY	, new LocalTime(9, 30), new LocalTime(20, 30), branch));
-		branch.getTradingPeriods().add(new TradingPeriod(null, TUESDAY	, new LocalTime(10, 30), new LocalTime(20, 30), branch));
-		branch.getTradingPeriods().add(new TradingPeriod(null, WEDNESDAY, new LocalTime(11, 30), new LocalTime(20, 30), branch));
-		branch.getTradingPeriods().add(new TradingPeriod(null, THURSDAY	, new LocalTime(12, 30), new LocalTime(20, 30), branch));
-		branch.getTradingPeriods().add(new TradingPeriod(null, FRIDAY	, new LocalTime(13, 30), new LocalTime(20, 30), branch));
-		branch.getTradingPeriods().add(new TradingPeriod(null, SATURDAY	, new LocalTime(14, 30), new LocalTime(20, 30), branch));
-		branch.getTradingPeriods().add(new TradingPeriod(null, SUNDAY	, new LocalTime(15, 30), new LocalTime(20, 30), branch));
+		
+		List<TradingPeriod> tradingPeriods = branch.getTradingPeriods();
+		tradingPeriods.add(TradingPeriod.builder().dayOfWeek(MONDAY).branch(branch).openingTime(new LocalTime(9, 30)).closingTime(new LocalTime(20, 30)).build());
+		tradingPeriods.add(TradingPeriod.builder().dayOfWeek(TUESDAY).branch(branch).openingTime(new LocalTime(9, 30)).closingTime(new LocalTime(20, 30)).build());
+		tradingPeriods.add(TradingPeriod.builder().dayOfWeek(WEDNESDAY).branch(branch).openingTime(new LocalTime(9, 30)).closingTime(new LocalTime(20, 30)).build());
+		tradingPeriods.add(TradingPeriod.builder().dayOfWeek(THURSDAY).branch(branch).openingTime(new LocalTime(9, 30)).closingTime(new LocalTime(20, 30)).build());
+		tradingPeriods.add(TradingPeriod.builder().dayOfWeek(FRIDAY).branch(branch).openingTime(new LocalTime(9, 30)).closingTime(new LocalTime(20, 30)).build());
+		tradingPeriods.add(TradingPeriod.builder().dayOfWeek(SATURDAY).branch(branch).openingTime(new LocalTime(9, 30)).closingTime(new LocalTime(20, 30)).build());
+		tradingPeriods.add(TradingPeriod.builder().dayOfWeek(SUNDAY).branch(branch).openingTime(new LocalTime(9, 30)).closingTime(new LocalTime(20, 30)).build());
 		
 		branchRepository.save(branch);
 		

@@ -34,7 +34,7 @@ public class TradingPeriodCommandConverterImplTest {
 		TradingPeriodCommand command = converter.toCommand(tradingPeriod);
 		
 		assertNotNull(command);
-		assertEquals(tradingPeriod.getDayOfWeek().ordinal(), command.getDayOfWeek());
+		assertEquals(tradingPeriod.getId().getDayOfWeek().ordinal(), command.getDayOfWeek());
 		assertEquals(testRawOpeningTime, command.getOpeningTime());
 		assertEquals(testRawClosingTime, command.getClosingTime());
 	}
@@ -46,7 +46,7 @@ public class TradingPeriodCommandConverterImplTest {
 		TradingPeriod tradingPeriod = converter.toEntity(command);
 		
 		assertNotNull(tradingPeriod);
-		assertEquals(command.getDayOfWeek(), tradingPeriod.getDayOfWeek().ordinal());
+		assertEquals(command.getDayOfWeek(), tradingPeriod.getId().getDayOfWeek().ordinal());
 		assertEquals(testOpeningTime, tradingPeriod.getOpeningTime());
 		assertEquals(testClosingTime, tradingPeriod.getClosingTime());
 	}

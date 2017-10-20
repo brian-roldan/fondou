@@ -38,7 +38,7 @@ public class Branch {
 	@Column(length=200, nullable=false)
 	private String mapLink; 
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true, mappedBy="branch")
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true, mappedBy="id.branch")
 	private List<TradingPeriod> tradingPeriods;
 	
 }

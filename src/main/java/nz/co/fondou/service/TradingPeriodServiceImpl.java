@@ -28,7 +28,7 @@ public class TradingPeriodServiceImpl implements TradingPeriodService {
 
 	@Override
 	public BranchTradingPeriodCommand getTradingPeriods(String branchName) {
-		Branch branch = Branch.builder().name(branchName).tradingPeriods(tradingPeriodRepository.findByBranchName(branchName)).build();
+		Branch branch = Branch.builder().name(branchName).tradingPeriods(tradingPeriodRepository.findByIdBranchName(branchName)).build();
 		return branchTradingPeriodConverter.toCommand(branch);
 	}
 	
@@ -37,7 +37,7 @@ public class TradingPeriodServiceImpl implements TradingPeriodService {
 	public void updateTradingHours(BranchTradingPeriodCommand command) {
 		Branch branchWithTradingPeriods = branchTradingPeriodConverter.toEntity(command);
 		Branch repositoryBranch = branchRepository.findBranchByName(branchWithTradingPeriods.getName());
-		branchWithTradingPeriods.getTradingPeriods().forEach(tradingPeriod -> tradingPeriod.setBranch(repositoryBranch));
+		branchWithTradingPeriods.getTradingPeriods().forEach(tradingPeriod -> tradingPeriod.getId().setBranch(repositoryBranch));
 		repositoryBranch.getTradingPeriods().clear();
 		repositoryBranch.getTradingPeriods().addAll(branchWithTradingPeriods.getTradingPeriods());
 		branchRepository.save(repositoryBranch);

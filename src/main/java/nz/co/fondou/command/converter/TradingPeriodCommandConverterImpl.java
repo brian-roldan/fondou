@@ -18,8 +18,8 @@ public class TradingPeriodCommandConverterImpl implements TradingPeriodCommandCo
 	@Override
 	public TradingPeriodCommand toCommand(TradingPeriod tradingPeriod) {
 		return TradingPeriodCommand.builder()
-				.dayTitle(tradingPeriod.getDayOfWeek().toString())
-				.dayOfWeek(tradingPeriod.getDayOfWeek().ordinal())
+				.dayTitle(tradingPeriod.getId().getDayOfWeek().toString())
+				.dayOfWeek(tradingPeriod.getId().getDayOfWeek().ordinal())
 				.openingTime(nonNull(tradingPeriod.getOpeningTime()) ? timeFormat.print(tradingPeriod.getOpeningTime()) : null)
 				.closingTime(nonNull(tradingPeriod.getClosingTime()) ? timeFormat.print(tradingPeriod.getClosingTime()) : null)
 				.build();
