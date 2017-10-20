@@ -30,26 +30,37 @@
 	                        </h1>
 	                        <div class="row">
 	                        	<div class="col-lg-6">
-	                        		<form th:object="${command}" method="post" th:action="@{/cms/{branch}/address(branch=${branch})}">
-		                        		<div class="form-group">
-											<label id="imageLabel">Address</label>         
-											<input class="form-control"  maxlength="100" th:field="*{address}" />
-											<p class="help-block">Max 100 Characters</p>
+	                        		<form id="addressForm" th:object="${command}" method="post" th:action="@{/cms/{branch}/address(branch=${branch})}">
+		                        		<strong class="text-danger" th:if="${#fields.hasErrors('all')}">
+		                        			Oops, there are some errors :(
+		                        		</strong>
+		                        		<ul th:if="${#fields.hasErrors('all')}">
+		                        			<li class="text-danger" th:each="error : ${#fields.errors('all')}" th:text="${error}"> Error Message </li>
+		                        		</ul>
+		                        		<div class="form-group" th:class="${#fields.hasErrors('address')} ? 'form-group has-error' : 'form-group'">
+											<label class="control-label">
+												Address
+											</label>         
+											<input class="form-control" maxlength="100" th:field="*{address}" />
+											<small class="help-block">Max 100 Characters</small>
 										</div>
-										<div class="form-group">
-											<label>Google Map Link:</label>
+										<div class="form-group" th:class="${#fields.hasErrors('mapLink')} ? 'form-group has-error' : 'form-group'">
+											<label class="control-label">Google Map Link:</label>
 											<p class="help-block">
 												<ol>
-													<li> Go to maps.google.com </li>
-													<li> Click an establishment </li>
-													<li> Click share on the left hand side panel </li>
-													<li> Check "Short URL" and copy the link </li>
+													<li> Go to <a target="_blank" href="http://maps.google.com">Google maps</a>.</li>
+													<li> Search for the location of the establishment.</li>
+													<li> Click share on the left hand side panel.</li>
+													<li> Check "Short URL" and copy the link.</li>
 												</ol>
 											</p>
 											<input class="form-control"  maxlength="200" th:field="*{mapLink}"/>
-											<p class="help-block">Max 200 Characters</p>
+											<small class="help-block">Max 200 Characters</small>
 										</div>
-										<input type="submit" class="btn btn-primary" value="Save"/>
+										<p class="pull-right">
+											<button onclick="document.getElementById('addressForm').reset()" type="submit" class="btn btn-warning">Reset</button>
+											<input type="submit" class="btn btn-success" value="Save"/>
+										</p>
 	                        		</form>
 	                        	</div>
 	                        </div>

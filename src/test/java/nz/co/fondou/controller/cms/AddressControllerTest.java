@@ -4,6 +4,7 @@ import static java.lang.String.format;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -11,16 +12,17 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
 import nz.co.fondou.configuration.ModelAttributeConfiguration;
 import nz.co.fondou.service.AddressCommand;
@@ -35,6 +37,8 @@ public class AddressControllerTest {
 	AddressService addressService;
 	@Mock
 	Model model;
+	@Mock
+	BindingResult errors;
 	
 	MockMvc mockMvc;
 	
@@ -69,12 +73,20 @@ public class AddressControllerTest {
 
 	@Test
 	public void testSaveAddress() {
-		AddressCommand testBranch = AddressCommand.builder().address(testAddress).mapLink(testMapLink).build();
+		AddressCommand addressCommand = AddressCommand.builder().address(testAddress).mapLink(testMapLink).build();
 		
-		addressController.saveAddress(testBranchName, testBranch, null);
+		addressController.saveAddress(model, testBranchName, addressCommand, errors);
 		
-		assertEquals(testBranchName, testBranch.getBranchName());
-		verify(addressService, times(1)).saveAddress(eq(testBranch));
+		assertEquals(testBranchName, addressCommand.getBranchName());
+		verify(addressService, times(1)).saveAddress(eq(addressCommand));
+	}
+
+	@Test
+	public void testSaveAddressWithErrors() {
+		AddressCommand addressCommand = AddressCommand.builder().address(testAddress).build();
+		when(errors.hasErrors()).thenReturn(true);
+		addressController.saveAddress(model, testBranchName, addressCommand, errors);
+		verify(addressService, never()).saveAddress(eq(addressCommand));
 	}
 	
 	@Test
@@ -97,12 +109,14 @@ public class AddressControllerTest {
                 .param("mapLink", testMapLink)).andExpect(status().is3xxRedirection()).andExpect(view().name(saveAddressRedirectUrl));
 	}
 	
-	@Ignore //TODO - update when validation is available
 	@Test
 	public void testMissingPostParameterViewAddressMvc() throws Exception {
 		mockMvc.perform(post(addressUrl)
                 .contentType(APPLICATION_FORM_URLENCODED)
-                .param("mapLink", testMapLink)).andExpect(status().is4xxClientError());
+                .param("mapLink", testMapLink))
+		.andExpect(status().isOk())
+		.andExpect(view().name(viewAddressView))
+		.andExpect(model().attributeHasFieldErrors("command", "address"));
 	}
 	
 }
