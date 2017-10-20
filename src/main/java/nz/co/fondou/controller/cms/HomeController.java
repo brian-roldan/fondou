@@ -22,7 +22,7 @@ public class HomeController {
 	@GetMapping(value={"/cms", "/cms/index"})
 	public String home(Model model){
 		Branch mainBranch = branchService.getMainBranch();
-		model.addAttribute(modelAttributeConfiguration.getBranchKey(), mainBranch);
+		model.addAttribute(modelAttributeConfiguration.getBranchKey(), mainBranch.getName());
 		return "cms/index";
 	}
 	

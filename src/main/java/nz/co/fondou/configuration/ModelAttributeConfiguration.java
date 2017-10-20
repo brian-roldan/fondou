@@ -8,5 +8,6 @@ import lombok.Getter;
 public class ModelAttributeConfiguration {
 
 	private final String branchKey;
+	private final String commandKey;
 	
 }

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="ISO-8859-1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<!-- Bootstrap Core CSS -->
+		<link rel="stylesheet" type="text/css" href="../../../static/cms/css/bootstrap.min.css" th:href="@{/cms/css/bootstrap.min.css}" />
+
+		<!-- Custom CSS -->
+		<link rel="stylesheet" type="text/css" href="../../../static/cms/css/sb-admin.css" th:href="@{/cms/css/sb-admin.css}" />
+		
+		<!-- Custom Fonts -->
+		<link rel="stylesheet" type="text/css" href="../../../static/cms/font-awesome/css/font-awesome.min.css" th:href="@{/cms/font-awesome/css/font-awesome.min.css}" />
+		
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/timepicker/jquery.timepicker.min.css" />
+		
+		<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/timepicker/jquery.timepicker.min.js"></script>
+		
+		<script type="text/javascript">
+		
+			function init() {
+				$('.timepicker').timepicker({ 'timeFormat': 'H:i' });
+			}
+		
+		</script>
+		
+		<title>Fondou CMS - Address</title>
+	</head>
+	<body onload="init()">
+		<nav th:replace="cms/cms-base :: navigation">
+		</nav>
+		<div id="wrapper">	
+	        <div id="page-wrapper">	
+	            <div class="container-fluid">	
+	                <div class="row">
+	                    <div class="col-lg-12">
+	                        <h1 class="page-header">
+	                            Trading Periods
+	                        </h1>
+	                        <div class="row">
+	                        	<div class="col-lg-6">
+	                        		<form th:object="${command}" method="post" th:action="@{/cms/{branch}/tradingPeriods(branch=${branch})}">
+	                        			<div class="form-group" th:each="tradingPeriod, stat : *{tradingPeriods}">	
+											<label th:text="*{#strings.capitalize(#strings.toLowerCase(tradingPeriods[__${stat.index}__].dayTitle))}">Monday</label>
+											<input type="hidden" th:field="*{tradingPeriods[__${stat.index}__].dayOfWeek}" />
+												<div class="form-inline">
+												<div class="col-3">
+													<input class="form-control timepicker" th:field="*{tradingPeriods[__${stat.index}__].openingTime}" />
+													<label>To</label>
+													<input class="form-control timepicker" th:field="*{tradingPeriods[__${stat.index}__].closingTime}" />
+												</div>
+											</div>											
+										</div>
+										<input type="submit" class="btn btn-primary" value="Save"/>
+	                        		</form>
+	                        	</div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>	
+	    </div>	
+		<script type="text/javascript" src="../../../static/cms/js/bootstrap.min.js" th:src="@{/cms/js/bootstrap.min.js}"></script>
+	</body>
+</html>

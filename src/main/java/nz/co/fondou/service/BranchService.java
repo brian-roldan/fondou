@@ -7,6 +7,6 @@ public interface BranchService {
 	public Branch getMainBranch();
 	public Branch getBranchByName(String branchName);
 	
-	public void saveAddress(Branch branch);
+	public void saveAddressByName(Branch branch);
 	
 }

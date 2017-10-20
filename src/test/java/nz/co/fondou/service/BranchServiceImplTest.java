@@ -41,7 +41,7 @@ public class BranchServiceImplTest {
 
 	@Test
 	public void testGetBranchByNameWithReturnFromRepository() {
-		Branch testBranch = new Branch(testBranchId, testBranchName, testAddress, testMapLink);
+		Branch testBranch = Branch.builder().id(testBranchId).name(testBranchName).address(testAddress).mapLink(testMapLink).build();
 
 		when(branchRepository.findBranchByName(anyString())).thenReturn(testBranch);
 
@@ -59,18 +59,17 @@ public class BranchServiceImplTest {
 	}
 	
 	@Test 
-	public void testSaveAddress() {
-		Branch savedBranch = new Branch(testBranchId, testBranchName, testAddress, testMapLink);
-		Branch newBranch = new Branch(null, testBranchName, testNewAddress, testNewMapLink);
-		
-		when(branchRepository.findBranchByName(newBranch.getName())).thenReturn(savedBranch);
-		
-		branchService.saveAddress(newBranch);
-		
-		assertEquals(testNewAddress, savedBranch.getAddress());
-		assertEquals(testNewMapLink, savedBranch.getMapLink());
-		verify(branchRepository, times(1)).save(eq(savedBranch));
-		
-	}
+		public void testSaveAddressByName() {
+			Branch savedBranch = Branch.builder().id(testBranchId).name(testBranchName).address(testAddress).mapLink(testMapLink).build();
+			Branch newBranch = Branch.builder().name(testBranchName).address(testNewAddress).mapLink(testNewMapLink).build();
+			
+			when(branchRepository.findBranchByName(newBranch.getName())).thenReturn(savedBranch);
+			
+			branchService.saveAddressByName(newBranch);
+			
+			assertEquals(testNewAddress, savedBranch.getAddress());
+			assertEquals(testNewMapLink, savedBranch.getMapLink());
+			verify(branchRepository, times(1)).save(eq(savedBranch));
+		}
 
 }
